@@ -43,5 +43,15 @@ CORE_IMAGE_BASE_INSTALL += " \
 # IMSDK currently only used and tested on ARMv8 (aarch64) machines.
 CORE_IMAGE_BASE_INSTALL:append:aarch64 = " gst-plugins-imsdk-oss"
 
+require ../../recipes-quickboot/quickboot-support.inc
+
+# QuickBoot early-boot optimizations. DISTRO_FEATURES gates the feature
+# globally, while QUICKBOOT_SOC_FAMILIES keeps unsupported SoC families from
+# pulling recipes that COMPATIBLE_MACHINE will skip during parsing.
+# QUICKBOOT_SUBSYSTEMS controls optional payload packages; core is pulled in
+# automatically when at least one subsystem is enabled.
+PACKAGE_INSTALL_ATTEMPTONLY:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'quickboot', \
+    quickboot_package_list(d), '', d)}"
+
 # let's make sure we have a good image.
 REQUIRED_DISTRO_FEATURES += "wayland"
