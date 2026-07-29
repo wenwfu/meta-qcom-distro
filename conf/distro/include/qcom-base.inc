@@ -22,6 +22,7 @@ DISTRO_FEATURES:append = " \
     pam \
     pni-names \
     polkit \
+    quickboot \
     security \
     tpm2 \
     virtualization \

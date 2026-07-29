@@ -27,3 +27,12 @@ CORE_IMAGE_BASE_INSTALL:append = " \
 "
 
 TOOLCHAIN_HOST_TASK:append = " nativesdk-protobuf-camx-compiler"
+
+require ../../recipes-quickboot/quickboot-support.inc
+
+# QuickBoot early-boot optimizations, applied to the proprietary image only.
+# DISTRO_FEATURES gates the feature globally, while QUICKBOOT_MACHINES keeps
+# unsupported machines from pulling recipes that COMPATIBLE_MACHINE will skip
+# during parsing. QUICKBOOT_SUBSYSTEMS controls which payload packages are added.
+PACKAGE_INSTALL_ATTEMPTONLY:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'quickboot', \
+    quickboot_package_list(d), '', d)}"
