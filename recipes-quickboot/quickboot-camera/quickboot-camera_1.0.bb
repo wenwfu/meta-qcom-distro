@@ -12,7 +12,9 @@ SRC_URI = " \
 S = "${UNPACKDIR}"
 
 do_install() {
-    # Install kernel module load list for camera pipeline
+    # Install kernel module load list for camera pipeline. Resolved by FILESPATH:
+    # files/${MACHINE}/camera-modules.conf if present, otherwise the generic
+    # (empty) fallback in files/.
     install -d ${D}${sysconfdir}/modules-load.d/
     install -m 0644 ${UNPACKDIR}/camera-modules.conf \
         ${D}${sysconfdir}/modules-load.d/quickboot-camera.conf

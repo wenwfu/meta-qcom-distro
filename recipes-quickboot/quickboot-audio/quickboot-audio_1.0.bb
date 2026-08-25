@@ -23,19 +23,23 @@ AUDIOREACH_MODULE = "${@bb.utils.contains('BBFILE_COLLECTIONS', 'meta-audioreach
 S = "${UNPACKDIR}"
 
 do_install() {
+    # Install kernel module load list for audio pipeline. Resolved by FILESPATH:
+    # files/${MACHINE}/audio-modules.conf if present, otherwise the generic
+    # (empty) fallback in files/.
     install -d ${D}${sysconfdir}/modules-load.d/
     install -m 0644 ${UNPACKDIR}/audio-modules.conf \
         ${D}${sysconfdir}/modules-load.d/quickboot-audio.conf
 
     # audioreach_driver is an out-of-tree module from meta-audioreach.
-    # AUDIOREACH_MODULE is set to 'audioreach_driver' at parse time if
-    # meta-audioreach is in BBFILE_COLLECTIONS, otherwise it is empty.
-    # This appends it to the module load list only when the layer is present.
+    # AUDIOREACH_MODULE is 'audioreach_driver' when meta-audioreach is in
+    # BBFILE_COLLECTIONS at parse time, otherwise empty.
     if [ -n "${AUDIOREACH_MODULE}" ]; then
         echo "${AUDIOREACH_MODULE}" >> \
             ${D}${sysconfdir}/modules-load.d/quickboot-audio.conf
     fi
 }
+
+ALLOW_EMPTY:${PN} = "1"
 
 FILES:${PN} = " \
     ${sysconfdir}/modules-load.d/quickboot-audio.conf \

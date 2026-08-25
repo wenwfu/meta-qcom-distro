@@ -12,7 +12,9 @@ SRC_URI = " \
 S = "${UNPACKDIR}"
 
 do_install() {
-    # Install kernel module load list for early display pipeline
+    # Install kernel module load list for early display pipeline. Resolved by
+    # FILESPATH: files/${MACHINE}/display-modules.conf if present, otherwise the
+    # generic (empty) fallback in files/.
     install -d ${D}${sysconfdir}/modules-load.d/
     install -m 0644 ${UNPACKDIR}/display-modules.conf \
         ${D}${sysconfdir}/modules-load.d/quickboot-display.conf
