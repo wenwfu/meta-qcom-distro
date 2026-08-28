@@ -15,9 +15,9 @@ repos:
   meta-openembedded:
     url: https://github.com/openembedded/meta-openembedded
     patches:
-      plain:
+      redis-install-prefix:
         repo: meta-qcom-distro
-        path: patches/meta-oe/0001-mariadb-fix-building-for-the-ARMv8.3-A-and-later-sys.patch
+        path: patches/meta-oe/0001-redis-fix-the-install-prefix-with-8.10.0.patch
     layers:
       meta-filesystems:
       meta-gnome:
@@ -32,13 +32,23 @@ repos:
     branch: main
 
   meta-virtualization:
-    url: https://git.yoctoproject.org/git/meta-virtualization
+    url: https://git.yoctoproject.org/meta-virtualization
 
   meta-audioreach:
     url: https://github.com/AudioReach/meta-audioreach
 
   meta-selinux:
     url: https://git.yoctoproject.org/meta-selinux
+    patches:
+      libsepol-nativesdk:
+        repo: meta-qcom-distro
+        path: patches/selinux/0001-libsepol-enable-nativesdk.patch
+      libselinux-nativesdk:
+        repo: meta-qcom-distro
+        path: patches/selinux/0002-libselinux-enable-nativesdk.patch
+      libselinux-python-swig-4.5:
+        repo: meta-qcom-distro
+        path: patches/selinux/0003-libselinux-python-fix-the-build-against-swig-4.5.0.patch
 
   meta-updater:
     url: https://github.com/uptane/meta-updater
