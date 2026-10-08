@@ -39,6 +39,7 @@ RDEPENDS:${PN}-filesystem-utils = " \
     e2fsprogs-mke2fs \
     e2fsprogs-resize2fs \
     e2fsprogs-tune2fs \
+    fsverity-utils \
     "
 
 RDEPENDS:${PN}-gpu-utils = " \
@@ -62,6 +63,7 @@ RDEPENDS:${PN}-network-utils = " \
     openssh-scp \
     openssh-ssh \
     paho-mqtt-c \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'polkit', 'polkit-group-rule-network', '', d)} \
     rsync \
     smbclient \
     tcpdump \

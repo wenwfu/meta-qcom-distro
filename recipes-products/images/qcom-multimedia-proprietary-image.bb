@@ -13,6 +13,7 @@ CORE_IMAGE_BASE_INSTALL += " \
     camx-kodiak \
     camx-lemans \
     camx-nhx \
+    camx-shikra \
     camx-talos \
     gst-plugins-imsdk-prop \
     iris-video-dlkm \
@@ -21,8 +22,9 @@ CORE_IMAGE_BASE_INSTALL += " \
     onnxruntime-qnn \
     qcom-adreno \
     qcom-sensors-binaries \
-    qwes \
+    quickboot-camera-camx \
 "
+
 CORE_IMAGE_BASE_INSTALL:append = " \
     ${@bb.utils.contains('BBFILE_COLLECTIONS', 'meta-audioreach', ' packagegroup-audioreach', '', d)} \
 "
