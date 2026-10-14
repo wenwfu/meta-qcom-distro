@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Wenwen Fu <wenwfu@qti.qualcomm.com>
+Date: Wed, 14 Oct 2026 00:00:00 +0800
+Subject: [PATCH] weston: start from the primary DRM device event
+
+The default Weston unit is enabled by graphical.target and therefore waits
+for the regular boot target chain. Start it from the primary DRM device
+event instead, so Weston is launched as soon as the display device is ready.
+
+DefaultDependencies is disabled for QuickBoot activation. Keep explicit
+filesystem, user-session, and shutdown ordering because the normal service
+dependencies are no longer added automatically.
+
+Upstream-Status: Inappropriate [QuickBoot activation is distro policy]
+
+Signed-off-by: Wenwen Fu <wenwfu@qti.qualcomm.com>
+---
+ weston.service | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/weston.service b/weston.service
+index 0000000..0000000 100644
+--- a/weston.service
++++ b/weston.service
+@@ -5,6 +5,7 @@
+ # the plugin systemd-notify.so.
+ [Unit]
+ Description=Weston, a Wayland compositor, as a system service
++DefaultDependencies=no
+ Documentation=man:weston(1) man:weston.ini(5)
+ Documentation=http://wayland.freedesktop.org/
+ 
+@@ -11,6 +12,7 @@ Documentation=http://wayland.freedesktop.org/
+ # Make sure we are started after logins are permitted.
+ Requires=systemd-user-sessions.service
+ After=systemd-user-sessions.service
++After=dev-dri-card0.device local-fs.target systemd-sysusers.service systemd-tmpfiles-setup.service
+ 
+ # If Plymouth is used, we want to start when it is on its way out.
+ After=plymouth-quit-wait.service
+@@ -25,6 +27,8 @@ After=dbus.socket
+ # Since we are part of the graphical session, make sure we are started before
+ # it is complete.
+ Before=graphical.target
++Conflicts=shutdown.target
++Before=shutdown.target
+ 
+ # Prevent starting on systems without virtual consoles, Weston requires one
+ # for now.
+--
+2.43.0
