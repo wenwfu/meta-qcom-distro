@@ -1,0 +1,35 @@
+From 3da3b5e4a6050276d2cf8154a01d1f3dabb957ae Mon Sep 17 00:00:00 2001
+From: Wenwen Fu <wenwfu@qti.qualcomm.com>
+Date: Thu, 5 Nov 2026 10:02:03 +0800
+Subject: [PATCH] unconfined: allow perf event access
+
+The unconfined domain has the perfmon capability but no perf_event
+permissions. This prevents perf from collecting performance counters
+and tracepoints with SELinux enforcing.
+
+Allow unconfined_t to open, read and control perf events, including
+CPU, kernel and tracepoint collection.
+
+Upstream-Status: Submitted [https://github.com/SELinuxProject/refpolicy/pull/1279]
+
+Assisted-by: Codex:GPT-6
+Signed-off-by: Wenwen Fu <wenwfu@qti.qualcomm.com>
+---
+ policy/modules/system/unconfined.te | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/policy/modules/system/unconfined.te b/policy/modules/system/unconfined.te
+index 169ecd759..2753724ce 100644
+--- a/policy/modules/system/unconfined.te
++++ b/policy/modules/system/unconfined.te
+@@ -29,6 +29,8 @@ role unconfined_r types unconfined_execmem_t;
+ # Local policy
+ #
+ 
++allow unconfined_t self:perf_event { open cpu kernel tracepoint read write };
++
+ domtrans_pattern(unconfined_t, unconfined_execmem_exec_t, unconfined_execmem_t)
+ 
+ files_create_boot_flag(unconfined_t)
+-- 
+2.43.0
