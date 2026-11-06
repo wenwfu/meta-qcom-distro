@@ -59,6 +59,9 @@ SPDX_INCLUDE_KERNEL_CONFIG ?= "1"
 # Pull in the initrd image by default
 INITRAMFS_IMAGE = "initramfs-rootfs-image"
 
+# Built-in GENI I2C needs QUP firmware before the real rootfs is mounted.
+PACKAGE_INSTALL:append:pn-${INITRAMFS_IMAGE} = " qcom-qup-firmware"
+
 INHERIT += "buildhistory"
 INHERIT += "image-buildinfo"
 INHERIT += "recipe_sanity"
