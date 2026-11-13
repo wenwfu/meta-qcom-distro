@@ -4,3 +4,7 @@ header:
     - ci/meta-qcom.yml
     - repo: meta-qcom
       file: ci/performance.yml
+
+local_conf_header:
+  boot-menu: |
+    SYSTEMD_BOOT_TIMEOUT:pn-esp-qcom-image = "menu-disabled"
